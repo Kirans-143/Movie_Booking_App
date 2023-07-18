@@ -34,7 +34,7 @@ exports.createMovie = async(req,res) =>{
         return res.status(200).send(movie)
     }catch(err){
         return res.status(500).send({
-            message:"Some error occured while creating the movie"
+            message:"Some error occured while creating the movie " + err
         })
     }
 }
