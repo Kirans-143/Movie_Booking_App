@@ -2,6 +2,34 @@ const Movie = require('../models/movie.model')
 const Theatre = require('../models/theatre.model')
 const mongoose = require('mongoose')
 
+
+exports.addTheatre = async (req,res) => {
+
+    let theatreObject = {
+        name: req.body.name,
+        city: req.body.city,
+        description: req.body.description,
+        pinCode: req.body.pinCode
+    }
+
+    
+
+    try {
+
+        if(!theatreObject) {
+            res.send("Please fill all fields to add a theatre...").status(400)
+
+       } else if (theatreObject) {
+            Theatre.create(theatreObject);
+            res.send("A Theatre is added successfully..." + theatreObject).status(200)
+       }
+
+    } catch(error) {
+         res.send("error occured in add a theatre..." + error.message).status(500)
+    }
+    
+}
+
 exports.createTheatre = async(req,res)=>{
     const theatreObject = {
         name:req.body.name,

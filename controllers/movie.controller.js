@@ -78,10 +78,17 @@ exports.updateMovie = async(req,res) =>{
 }
 
 exports.deleteMovie = async(req,res) =>{
-    await Movie.deleteOne({
-        _id:req.params.id
-    })
-    return res.status(200).send({
-        message:"Successfully deleted movie with id " + req.params.id
-    })
+    try{
+        await Movie.deleteOne({
+            _id:req.params.id
+        })
+         res.status(200).send({
+            message:"Successfully deleted movie with id " + req.params.id + '.'
+        })
+    }catch(err){
+        console.log(err.message)
+        res.status(500).send({
+            message:'Internal Server Error'
+        })
+    }
 }
