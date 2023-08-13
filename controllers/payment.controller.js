@@ -2,6 +2,7 @@ const Bookings = require("../models/bookings.model");
 const Payments = require("../models/payments.model");
 const Users = require("../models/users.model");
 const Constants = require("../utils/constants");
+const { sendEmail } = require("../utils/notificationClient");
 
 exports.getAllPayments = async (req, res) => {
   const queryObj = {};
@@ -56,6 +57,16 @@ exports.createPayment = async (req, res) => {
     const payment = await Payments.create(paymentObect);
     booking.status = Constants.bookingAndPaymentObjects.bookingStatus.completed;
     await booking.save();
+    const user = await Users.findOne({
+      userId: req.userId,
+    });
+    sendEmail(
+      payment._id,
+      "Payment successful for the booking id : " + payment.bookingId,
+      JSON.stringify(booking),
+      user.email,
+      "mba-no-reply@gmail.com"
+    );
     return res.status(201).send(payment);
   } catch (err) {
     console.log(err.message);

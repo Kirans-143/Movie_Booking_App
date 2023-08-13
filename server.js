@@ -9,6 +9,8 @@ const Movies = require("./models/movie.model");
 const Users = require("./models/users.model");
 const Theatre = require("./models/theatre.model");
 const Bookings = require("./models/bookings.model");
+const Payments = require("./models/payments.model");
+const Constants = require("./utils/constants");
 
 const app = express();
 
@@ -58,6 +60,14 @@ async function init() {
   });
   console.log("Two users created successfully");
 
+  const client = await Users.create({
+    name: "Client1",
+    userId: "client",
+    email: "kiranwork007@gmail.com",
+    userType: "CLIENT",
+    password: bcrypt.hashSync("Welcome", 8),
+  });
+
   await Theatre.collection.drop();
   const theatre = await Theatre.create({
     name: "FunCinema",
@@ -65,7 +75,9 @@ async function init() {
     description: "Top Class Theatre",
     pinCode: 581329,
     movies: [movie._id],
+    ownerId: client._id,
   });
+
   console.log("A movie and theatre created successfully");
 
   await Bookings.collection.drop();
@@ -76,6 +88,7 @@ async function init() {
     timing: "9pm - 12pm",
     noOfSeats: 5,
   });
+
   console.log("Booking is Created");
 }
 
