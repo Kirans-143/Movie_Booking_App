@@ -9,7 +9,7 @@ const movieReleaseStatusObj = {
 const userTypesObject = {
   userTypes: {
     customer: "CUSTOMER",
-    engineer: "CLIENT",
+    client: "CLIENT",
     admin: "ADMIN",
   },
   userStatus: {
@@ -28,6 +28,7 @@ const bookingAndPaymentObjects = {
     inProgress: "IN_PROGRESS",
     completed: "COMPLETED",
     cancelled: "CANCELLED",
+    expired: "EXPIRED",
   },
   ticketPrice: 250,
 };

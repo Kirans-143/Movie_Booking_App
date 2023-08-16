@@ -14,12 +14,12 @@ const getAllUsers = async (req, res) => {
           userId: user.userId,
         });
       });
-      res.send(users).status(200);
+      res.status(200).send(users);
     }
   } catch (error) {
     res
-      .send("error occured in getAllUsers Data..." + error.message)
-      .status(500);
+      .status(500)
+      .send("error occured in getAllUsers Data..." + error.message);
   }
 };
 
@@ -28,23 +28,21 @@ const getUserById = async (req, res) => {
 
   try {
     if (!entereduserId) {
-      res.send("Please enter a valid userId for getUserDetails...").status(400);
+      res.status(400).send("Please enter a valid userId for getUserDetails...");
     } else if (entereduserId) {
       let foundUser = await Users.findOne({ userId: entereduserId });
 
       if (foundUser) {
-        res
-          .send({
-            name: foundUser.name,
-            email: foundUser.email,
-            userType: foundUser.userType,
-            userStatus: foundUser.userStatus,
-          })
-          .status(200);
+        res.status(200).send({
+          name: foundUser.name,
+          email: foundUser.email,
+          userType: foundUser.userType,
+          userStatus: foundUser.userStatus,
+        });
       }
     }
   } catch (error) {
-    res.send("error occured in getUserById..." + error.message).status(500);
+    res.status(500).send("error occured in getUserById..." + error.message);
   }
 };
 
@@ -69,21 +67,21 @@ const updateUseerDetails = async (req, res) => {
 
         let updatedUserData = await foundUser.save();
         res
-          .send("userDetails updated Successfully..." + updatedUserData)
-          .status(200);
+          .status(200)
+          .send("userDetails updated Successfully..." + updatedUserData);
       } else if (!foundUser) {
-        res.send("No User found against entered userId...").status(400);
+        res.status(400).send("No User found against entered userId...");
         return;
       }
     } else if (!enteredUserId) {
       res
-        .send("Please provide a valid userId for update user Details...")
-        .status(400);
+        .status(400)
+        .send("Please provide a valid userId for update user Details...");
     }
   } catch (error) {
     res
-      .send("error occured while updating user Details..." + error.message)
-      .status(500);
+      .status(500)
+      .send("error occured while updating user Details..." + error.message);
   }
 };
 
@@ -96,16 +94,18 @@ const deleteUser = async (req, res) => {
 
       if (foundUser) {
         res
-          .send("One Of UserData has been successfully removed...")
-          .status(200);
+          .status(200)
+          .send("One Of UserData has been successfully removed...");
       }
     } else {
       res
-        .send("Please enter a userId for successfully remove userData...")
-        .status(400);
+        .status(400)
+        .send("Please enter a userId for successfully remove userData...");
     }
   } catch (error) {
-    res.send("error occured while removing userData..." + error.message);
+    res
+      .status(204)
+      .send("error occured while removing userData..." + error.message);
   }
 };
 

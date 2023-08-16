@@ -10,25 +10,25 @@ exports.getAllPayments = async (req, res) => {
 
   if (user.userType !== Constants.userTypesObject.userTypes.admin) {
     const bookings = await Bookings.find({ userId: user._id });
-    const bookingId = bookings.map((booking) => booking._id);
+    const bookingIds = bookings.map((booking) => booking._id);
     queryObj.bookingIds = { $in: bookingIds };
   }
   try {
-    const payments = await Payments.find(queryObj);
-    res.status(200).send({ payment });
+    const payment = await Payments.find(queryObj);
+    return res.status(200).send({ payment });
   } catch (err) {
     console.log(err.message);
-    res.status(500).send("Internal Server Error");
+    return res.status(500).send("Internal Server Error");
   }
 };
 
 exports.getPaymentsById = async (req, res) => {
   try {
     const payments = await Payments.findOne({ _id: req.params.id });
-    res.status(200).send(payments);
+    return res.status(200).send(payments);
   } catch (err) {
     console.log(err.message);
-    res.status(500).send({
+    return res.status(500).send({
       message: "Internal error while searching for the payment gateway",
     });
   }
@@ -57,6 +57,7 @@ exports.createPayment = async (req, res) => {
     const payment = await Payments.create(paymentObect);
     booking.status = Constants.bookingAndPaymentObjects.bookingStatus.completed;
     await booking.save();
+
     const user = await Users.findOne({
       userId: req.userId,
     });
